@@ -19,9 +19,16 @@ class AppTheme {
         titleMedium: CustomTextStyles.style18w700Black,
         titleLarge: CustomTextStyles.style20w700Black,
         displaySmall: CustomTextStyles.style24w700Black),
-    appBarTheme: AppBarTheme(
+    dividerTheme: const DividerThemeData(
+      color: AppColors.mainColorLight,
+      thickness: 2,
+      indent: 20,
+      endIndent: 20,
+    ),
+    appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.mainColorLight,
         foregroundColor: AppColors.mainColorDark,
+        iconTheme: IconThemeData(color: AppColors.mainColorDark),
         centerTitle: true,
         titleTextStyle: CustomTextStyles.style20w500Black),
   );
@@ -42,9 +49,16 @@ class AppTheme {
         titleMedium: CustomTextStyles.style18w700White,
         titleLarge: CustomTextStyles.style20w700White,
         displaySmall: CustomTextStyles.style24w700White),
-    appBarTheme: AppBarTheme(
+    dividerTheme: const DividerThemeData(
+      color: AppColors.mainColorLight,
+      thickness: 2,
+      indent: 20,
+      endIndent: 20,
+    ),
+    appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.mainColorDark,
         foregroundColor: AppColors.mainColorLight,
+        iconTheme: IconThemeData(color: AppColors.mainColorLight),
         centerTitle: true,
         titleTextStyle: CustomTextStyles.style20w500White),
   );

@@ -1,9 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:news_app/common/app_theme.dart';
+import 'package:news_app/providers/localization_provider.dart';
+import 'package:news_app/providers/theme_provider.dart';
 import 'package:news_app/screens/home_screen.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'common/app_prefs.dart';
+import 'l10n/app_localizations.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AppPrefs.init();
+  // caching localization(shared preference)
+  final localizationProvider = LocalizationProvider();
+  await localizationProvider.localizationGetBool();
+  //caching theme(shared preference)
+  final themeProvider = ThemeProvider();
+  await themeProvider.themeGetBool();
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<ThemeProvider>.value(value: themeProvider),
+      ChangeNotifierProvider<LocalizationProvider>.value(
+          value: localizationProvider),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -14,12 +36,23 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'), // English
+        Locale('ar'), // Arabic
+      ],
+      locale: Locale(context.watch<LocalizationProvider>().appLocalization),
       routes: {
-        HomeScreen.routeName: (_) => HomeScreen(),
+        HomeScreen.routeName: (_) => const HomeScreen(),
       },
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.light,
+      themeMode: context.watch<ThemeProvider>().themeMode,
       initialRoute: HomeScreen.routeName,
     );
   }
