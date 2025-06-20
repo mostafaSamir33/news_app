@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         body: selectedCategory != null
-            ? const CategoryDetailsView()
+            ? CategoryDetailsView(selectedCategory: selectedCategory,)
             : CategoriesView(
                 onCategorySelected: (p0) {
                   selectedCategory = p0;

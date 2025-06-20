@@ -39,8 +39,10 @@ class ThemeProvider extends ChangeNotifier {
     bool? themeGetBool = AppPrefs.themeGetBool(AppConstants.themeKey);
     if(themeGetBool==true){
       themeMode=ThemeMode.light;
-    }else{
+    }else if(themeGetBool==false){
       themeMode=ThemeMode.dark;
+    }else{
+      themeMode=ThemeMode.light;
     }
   }
 }

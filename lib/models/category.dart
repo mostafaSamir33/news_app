@@ -3,7 +3,7 @@ import 'package:news_app/common/app_assets.dart';
 enum CategoryType {
   general,
   business,
-  sport,
+  sports,
   technology,
   entertainment,
   health,
@@ -15,7 +15,7 @@ enum CategoryType {
         return AppAssets.general;
       case business:
         return AppAssets.business;
-      case sport:
+      case sports:
         return AppAssets.sport;
       case technology:
         return AppAssets.technology;
@@ -33,7 +33,7 @@ enum CategoryType {
       return 'عام';
     } else if (isArabic && name == business.name) {
       return 'عمل';
-    } else if (isArabic && name == sport.name) {
+    } else if (isArabic && name == sports.name) {
       return 'رياضة';
     } else if (isArabic && name == technology.name) {
       return 'تكنولوجيا';
