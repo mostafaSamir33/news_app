@@ -16,7 +16,7 @@ class CategoriesView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '${context.getLocalization().goodMorning}\n${context.getLocalization().hereIsSomeNewsForYou}', //TODO:localization
+            '${context.getLocalization().goodMorning}\n${context.getLocalization().hereIsSomeNewsForYou}',
             style: context.getTextTheme().labelMedium,
           ),
           ...List.generate(
