@@ -9,9 +9,15 @@ import '../models/article_response_model.dart';
 
 class SearchedArticlesApis {
   static Future<List<Articles>?> getSearchedArticlesByQ(
-      String searchQuery) async {
-    Uri uri = Uri.https(AppConstants.baseUrl, ApiEndpoints.everything,
-        {'apiKey': AppConstants.apiKey, 'q': searchQuery});
+      {required String searchQuery,
+      required int page,
+      int pageSize = 10}) async {
+    Uri uri = Uri.https(AppConstants.baseUrl, ApiEndpoints.everything, {
+      'apiKey': AppConstants.apiKey,
+      'q': searchQuery,
+      'page': page.toString(),
+      'pageSize': pageSize.toString()
+    });
 
     http.Response response = await http.get(uri);
 

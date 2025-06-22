@@ -14,6 +14,7 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
+        controller: context.read<SearchViewModelProvider>().scrollController,
         slivers: [
           SliverAppBar(
             automaticallyImplyLeading: false,
@@ -54,14 +55,27 @@ class SearchScreen extends StatelessWidget {
                     ),
                   );
                 }
-            
+
                 return SliverList.separated(
                   itemCount:
-                      context.read<SearchViewModelProvider>().articles.length,
-                  itemBuilder: (context, index) => ArticleCard(
-                      article: context
-                          .read<SearchViewModelProvider>()
-                          .articles[index]),
+                      context.read<SearchViewModelProvider>().articles.length +
+                          (provider.paginationLoading ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    if (provider.paginationLoading &&
+                        index == provider.articles.length) {
+                      return Center(
+                        child: Padding(
+                            padding: EdgeInsets.all(16),
+                            child: CircularProgressIndicator(
+                              color: context.getTextTheme().labelSmall!.color,
+                            )),
+                      );
+                    }
+                    return ArticleCard(
+                        article: context
+                            .read<SearchViewModelProvider>()
+                            .articles[index]);
+                  },
                   separatorBuilder: (context, index) => SizedBox(
                     height: 16,
                   ),

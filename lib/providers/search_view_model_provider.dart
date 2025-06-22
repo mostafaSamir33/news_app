@@ -5,20 +5,44 @@ import 'package:news_app/network/searched_articles_apis.dart';
 
 class SearchViewModelProvider extends ChangeNotifier {
   final TextEditingController controller = TextEditingController();
+  final ScrollController scrollController = ScrollController();
 
   List<Articles> articles = [];
   bool loading = false;
   String? errorMessage;
 
+  bool paginationLoading = false;
+
+  int page = 1;
+
+  SearchViewModelProvider() {
+    scrollController.addListener(
+      () {
+        if (scrollController.position.atEdge) {
+          bool isTop = scrollController.position.pixels == 0;
+          if (!isTop && !paginationLoading) {
+            page++;
+            paginationLoading = true;
+            notifyListeners();
+            getSearchedArticles();
+          }
+        }
+      },
+    );
+  }
+
   Future<void> getSearchedArticles() async {
-    articles = [];
-    loading = true;
+    List<Articles> newArticles = [];
     errorMessage = null;
-    notifyListeners();
+    if (articles.isEmpty) {
+      loading = true;
+      notifyListeners();
+    }
     try {
-      articles =
-          await SearchedArticlesApis.getSearchedArticlesByQ(controller.text) ??
-              [];
+      newArticles = await SearchedArticlesApis.getSearchedArticlesByQ(
+              searchQuery: controller.text, page: page) ??
+          [];
+      articles.addAll(newArticles);
     } on ClientException catch (error) {
       errorMessage =
           'something wrong with the server, try again later\n${error.message}';
@@ -29,12 +53,13 @@ class SearchViewModelProvider extends ChangeNotifier {
         errorMessage = e is String ? e : 'something went wrong';
       }
     }
-    loading=false;
+    loading = false;
+    paginationLoading = false;
     notifyListeners();
   }
 
-  void clearArticles(){
-    articles=[];
+  void clearArticles() {
+    articles = [];
     notifyListeners();
   }
 }
