@@ -3,6 +3,7 @@ import 'package:news_app/common/app_colors.dart';
 import 'package:news_app/common/extensions/context_extension.dart';
 import 'package:news_app/models/category.dart';
 import 'package:news_app/providers/localization_provider.dart';
+import 'package:news_app/screens/search_screen.dart';
 import 'package:news_app/views/categories_view.dart';
 import 'package:news_app/views/category_details_view.dart';
 import 'package:news_app/views/drawer_view.dart';
@@ -23,9 +24,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> key =GlobalKey();
+    final GlobalKey<ScaffoldState> key = GlobalKey();
     return Scaffold(
-      key: key,
+        key: key,
         drawer: SafeArea(
           child: Drawer(
             shape: const RoundedRectangleBorder(),
@@ -50,8 +51,9 @@ class _HomeScreenState extends State<HomeScreen> {
           actionsPadding: const EdgeInsets.symmetric(horizontal: 24),
           actions: [
             InkResponse(
-              onTap: () {},
-              //TODO:search logic
+              onTap: () {
+                Navigator.of(context).pushNamed(SearchScreen.routeName);
+              },
               radius: 10,
               borderRadius: BorderRadius.circular(20),
               splashColor: context.getTextTheme().labelMedium!.color,
@@ -60,7 +62,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         body: selectedCategory != null
-            ? CategoryDetailsView(selectedCategory: selectedCategory,)
+            ? CategoryDetailsView(
+                selectedCategory: selectedCategory,
+              )
             : CategoriesView(
                 onCategorySelected: (p0) {
                   selectedCategory = p0;

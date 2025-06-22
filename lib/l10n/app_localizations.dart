@@ -172,6 +172,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Arabic'**
   String get arabic;
+
+  /// No description provided for @viewFullArticle.
+  ///
+  /// In en, this message translates to:
+  /// **'View Full Article'**
+  String get viewFullArticle;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

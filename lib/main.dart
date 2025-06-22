@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:news_app/common/app_theme.dart';
 import 'package:news_app/providers/localization_provider.dart';
+import 'package:news_app/providers/search_view_model_provider.dart';
 import 'package:news_app/providers/theme_provider.dart';
 import 'package:news_app/screens/home_screen.dart';
+import 'package:news_app/screens/search_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'common/app_prefs.dart';
@@ -49,6 +51,9 @@ class MyApp extends StatelessWidget {
       locale: Locale(context.watch<LocalizationProvider>().appLocalization),
       routes: {
         HomeScreen.routeName: (_) => const HomeScreen(),
+        SearchScreen.routeName: (_) => ChangeNotifierProvider(
+            create: (context) => SearchViewModelProvider(),
+            child: const SearchScreen()),
       },
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
