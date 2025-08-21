@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:news_app/models/article_response_model.dart';
-import 'package:news_app/network/searched_articles_apis.dart';
+import 'package:news_app/features/articles/model/article_response_model.dart';
+import 'package:news_app/features/search_for_article/model/searched_articles_apis.dart';
 
 class SearchViewModelProvider extends ChangeNotifier {
   final TextEditingController controller = TextEditingController();

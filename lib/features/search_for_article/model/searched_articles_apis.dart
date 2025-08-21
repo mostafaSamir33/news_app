@@ -3,9 +3,9 @@ import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 
-import '../common/api_endpoints.dart';
-import '../common/app_constants.dart';
-import '../models/article_response_model.dart';
+import '../../../common/api_endpoints.dart';
+import '../../../common/app_constants.dart';
+import '../../articles/model/article_response_model.dart';
 
 class SearchedArticlesApis {
   static Future<List<Articles>?> getSearchedArticlesByQ(

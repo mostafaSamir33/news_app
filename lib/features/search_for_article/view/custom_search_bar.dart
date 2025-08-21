@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/common/extensions/context_extension.dart';
-import 'package:news_app/providers/search_view_model_provider.dart';
+import 'package:news_app/features/search_for_article/view_model/search_view_model_provider.dart';
 import 'package:provider/provider.dart';
 
 class CustomSearchBar extends StatefulWidget {

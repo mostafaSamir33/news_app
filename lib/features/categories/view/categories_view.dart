@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/common/extensions/context_extension.dart';
 
-import '../models/category.dart';
-import '../widgets/category_card.dart';
+import '../model/category.dart';
+import 'widgets/category_card.dart';
 
 class CategoriesView extends StatelessWidget {
   final void Function(CategoryType) onCategorySelected;

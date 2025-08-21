@@ -4,9 +4,9 @@ import 'package:news_app/common/app_assets.dart';
 import 'package:news_app/common/app_colors.dart';
 import 'package:news_app/common/custom_text_styles.dart';
 import 'package:news_app/common/extensions/context_extension.dart';
-import 'package:news_app/widgets/custom_drop_down_menu_theme.dart';
+import 'package:news_app/features/categories/view/custom_drop_down_menu_theme.dart';
 
-import '../widgets/custom_drop_down_menu_localization.dart';
+import 'custom_drop_down_menu_localization.dart';
 
 class DrawerView extends StatelessWidget {
   final void Function() goToHome;

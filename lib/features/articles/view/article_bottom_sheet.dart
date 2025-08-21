@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/common/extensions/context_extension.dart';
-import 'package:news_app/models/article_response_model.dart';
+import 'package:news_app/features/articles/model/article_response_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../common/app_colors.dart';
+import '../../../common/app_colors.dart';
 
 class ArticleBottomSheet extends StatelessWidget {
   final Articles article;
@@ -17,8 +17,8 @@ class ArticleBottomSheet extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Container(
-          padding: EdgeInsets.all(8),
-          margin: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(8),
+          margin: const EdgeInsets.all(16),
           decoration: BoxDecoration(
               color: context.getTextTheme().labelMedium!.color,
               borderRadius: BorderRadius.circular(16)),
@@ -41,7 +41,7 @@ class ArticleBottomSheet extends StatelessWidget {
                         ),
                       ),
                     ),
-                    errorWidget: (context, url, error) => Icon(
+                    errorWidget: (context, url, error) => const Icon(
                       Icons.image_not_supported_rounded,
                       color: AppColors.grey,
                       size: 200,

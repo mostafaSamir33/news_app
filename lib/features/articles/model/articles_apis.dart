@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
-import 'package:news_app/models/article_response_model.dart';
+import 'package:news_app/features/articles/model/article_response_model.dart';
 
-import '../common/api_endpoints.dart';
-import '../common/app_constants.dart';
+import '../../../common/api_endpoints.dart';
+import '../../../common/app_constants.dart';
 
 class ArticlesApis {
-  static Future<List<Articles>?> getArticlesBySource(String sourceId) async {
+  Future<List<Articles>?> getArticlesBySource(String sourceId) async {
     Uri uri = Uri.https(AppConstants.baseUrl, ApiEndpoints.everything,
         {'apiKey': AppConstants.apiKey, 'sources': sourceId});
 

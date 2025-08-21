@@ -3,8 +3,8 @@ import 'package:news_app/common/extensions/context_extension.dart';
 import 'package:news_app/providers/localization_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../common/app_colors.dart';
-import '../common/custom_text_styles.dart';
+import '../../../common/app_colors.dart';
+import '../../../common/custom_text_styles.dart';
 
 class CustomDropDownMenuLocalization extends StatelessWidget {
   const CustomDropDownMenuLocalization({super.key});

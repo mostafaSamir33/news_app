@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:news_app/common/app_colors.dart';
 import 'package:news_app/common/custom_text_styles.dart';
 import 'package:news_app/common/extensions/context_extension.dart';
-import 'package:news_app/models/article_response_model.dart';
-import 'package:news_app/widgets/article_bottom_sheet.dart';
+import 'package:news_app/features/articles/model/article_response_model.dart';
+import 'package:news_app/features/articles/view/article_bottom_sheet.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ArticleCard extends StatelessWidget {
@@ -45,7 +45,7 @@ class ArticleCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  errorWidget: (context, url, error) => Icon(
+                  errorWidget: (context, url, error) => const Icon(
                     Icons.image_not_supported_rounded,
                     color: AppColors.grey,
                     size: 200,

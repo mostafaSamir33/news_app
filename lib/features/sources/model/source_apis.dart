@@ -3,12 +3,12 @@ import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:news_app/common/app_constants.dart';
-import 'package:news_app/models/source_response_model.dart';
+import 'package:news_app/features/sources/model/source_response_model.dart';
 
-import '../common/api_endpoints.dart';
+import '../../../common/api_endpoints.dart';
 
 class SourceApis {
-  static Future<List<SourceModel>?> getSourcesByCategory(
+  Future<List<SourceModel>?> getSourcesByCategory(
       String category) async {
     Uri uri = Uri.https(AppConstants.baseUrl, ApiEndpoints.sources,
         {'apiKey': AppConstants.apiKey, 'category': category});

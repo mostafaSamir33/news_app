@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/common/app_colors.dart';
 import 'package:news_app/common/extensions/context_extension.dart';
-import 'package:news_app/models/category.dart';
+import 'package:news_app/features/categories/model/category.dart';
 import 'package:news_app/providers/localization_provider.dart';
 import 'package:provider/provider.dart';
 

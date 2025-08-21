@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/common/extensions/context_extension.dart';
-import 'package:news_app/providers/search_view_model_provider.dart';
-import 'package:news_app/widgets/article_card.dart';
-import 'package:news_app/widgets/custom_search_bar.dart';
+import 'package:news_app/features/search_for_article/view_model/search_view_model_provider.dart';
+import 'package:news_app/features/search_for_article/view/custom_search_bar.dart';
 import 'package:provider/provider.dart';
+
+import '../../../articles/view/article_card.dart';
 
 class SearchScreen extends StatelessWidget {
   static const String routeName = '/searchScreen';
@@ -16,14 +17,14 @@ class SearchScreen extends StatelessWidget {
       body: CustomScrollView(
         controller: context.read<SearchViewModelProvider>().scrollController,
         slivers: [
-          SliverAppBar(
+          const SliverAppBar(
             automaticallyImplyLeading: false,
             toolbarHeight: 80,
             title: CustomSearchBar(),
             floating: true,
           ),
           SliverPadding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             sliver: Consumer<SearchViewModelProvider>(
               builder: (context, provider, child) {
                 if (provider.loading) {
@@ -65,7 +66,7 @@ class SearchScreen extends StatelessWidget {
                         index == provider.articles.length) {
                       return Center(
                         child: Padding(
-                            padding: EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(16),
                             child: CircularProgressIndicator(
                               color: context.getTextTheme().labelSmall!.color,
                             )),
@@ -76,7 +77,7 @@ class SearchScreen extends StatelessWidget {
                             .read<SearchViewModelProvider>()
                             .articles[index]);
                   },
-                  separatorBuilder: (context, index) => SizedBox(
+                  separatorBuilder: (context, index) => const SizedBox(
                     height: 16,
                   ),
                 );
