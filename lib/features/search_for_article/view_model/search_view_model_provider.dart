@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:news_app/common/dependency_injection.dart';
 import 'package:news_app/features/articles/model/article_response_model.dart';
-import 'package:news_app/features/search_for_article/model/searched_articles_apis.dart';
+import 'package:news_app/features/search_for_article/model/repository/searched_articles_repository.dart';
+
+import '../../../common/failure/failure_model.dart';
 
 class SearchViewModelProvider extends ChangeNotifier {
   final TextEditingController controller = TextEditingController();
   final ScrollController scrollController = ScrollController();
+  SearchedArticlesRepository searchedArticlesRepository =
+      SearchedArticlesRepository(
+          searchedArticlesDataSource:
+              DependencyInjection.searchedArticlesDataSource);
 
   List<Articles> articles = [];
   bool loading = false;
@@ -39,19 +45,13 @@ class SearchViewModelProvider extends ChangeNotifier {
       notifyListeners();
     }
     try {
-      newArticles = await SearchedArticlesApis.getSearchedArticlesByQ(
-              searchQuery: controller.text, page: page) ??
-          [];
+      newArticles = await searchedArticlesRepository.getSearchedArticlesByQ(
+          searchQuery: controller.text, page: page);
       articles.addAll(newArticles);
-    } on ClientException catch (error) {
-      errorMessage =
-          'something wrong with the server, try again later\n${error.message}';
+    } on FailureModel catch (error) {
+      errorMessage = error.errorMessage;
     } catch (e) {
-      if (e is TypeError) {
-        errorMessage = 'error formating the received data';
-      } else {
-        errorMessage = e is String ? e : 'something went wrong';
-      }
+      errorMessage = e is String ? e : 'something went wrong';
     }
     loading = false;
     paginationLoading = false;

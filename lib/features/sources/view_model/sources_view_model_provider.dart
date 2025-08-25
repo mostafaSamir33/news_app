@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:news_app/features/sources/model/source_apis.dart';
+import 'package:news_app/common/dependency_injection.dart';
+import 'package:news_app/common/failure/failure_model.dart';
+import 'package:news_app/features/sources/model/repository_pattern/sources_repository.dart';
 
 import '../model/source_response_model.dart';
 
 class SourcesViewModelProvider extends ChangeNotifier {
-  final SourceApis _sourceApis = SourceApis();
+  SourcesRepository sourcesRepository = SourcesRepository(
+      sourcesDataSource: DependencyInjection.sourcesDataSource);
   List<SourceModel> sources = [];
   bool loading = false;
   String? errorMessage;
@@ -16,10 +18,9 @@ class SourcesViewModelProvider extends ChangeNotifier {
     loading = true;
     notifyListeners();
     try {
-      sources = await _sourceApis.getSourcesByCategory(categoryId) ?? [];
-    } on ClientException catch (error) {
-      errorMessage =
-          'Something wrong with the server, try again later\n${error.message}';
+      sources = await sourcesRepository.getSources(categoryId);
+    } on FailureModel catch (e) {
+      errorMessage = e.errorMessage;
     } catch (e) {
       errorMessage = e is String ? e : 'Something went wrong';
     }

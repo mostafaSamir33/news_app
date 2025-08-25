@@ -1,0 +1,37 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:http/http.dart' as http;
+import 'package:news_app/common/failure/failure_model.dart';
+import 'package:news_app/features/articles/model/article_response_model.dart';
+
+import '../../../common/api_endpoints.dart';
+import '../../../common/app_constants.dart';
+import 'articles_data_source.dart';
+
+class ArticlesApisDataSource implements ArticlesDataSource {
+  @override
+  Future<List<Articles>> getArticlesBySource(String sourceId) async {
+    try {
+      Uri uri = Uri.https(AppConstants.baseUrl, ApiEndpoints.everything,
+          {'apiKey': AppConstants.apiKey, 'sources': sourceId});
+
+      http.Response response = await http.get(uri);
+
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+
+      ArticleResponseModel data = ArticleResponseModel.fromJson(jsonResponse);
+      log('article request: ${uri.toString()}');
+      log('article response: ${response.reasonPhrase}');
+      log('article response2: ${response.body}');
+      if (data.status == 'ok' && response.statusCode == 200) {
+        return data.articles ?? [];
+      } else {
+        throw FailureModel(
+            errorMessage: data.message ?? 'something went wrong');
+      }
+    }catch (error) {
+      throw FailureModel.errorHandling(error);
+    }
+  }
+}
