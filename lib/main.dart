@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:news_app/common/app_theme.dart';
-import 'package:news_app/providers/localization_provider.dart';
-import 'package:news_app/features/search_for_article/view_model/search_view_model_provider.dart';
-import 'package:news_app/providers/theme_provider.dart';
 import 'package:news_app/features/categories/view/screens/home_screen.dart';
 import 'package:news_app/features/search_for_article/view/screens/search_screen.dart';
+import 'package:news_app/features/search_for_article/view_model/search_view_model_provider.dart';
+import 'package:news_app/providers/localization_provider.dart';
+import 'package:news_app/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'common/app_prefs.dart';
+import 'common/dependency_injection.dart';
 import 'l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  setup();
   await AppPrefs.init();
   // caching localization(shared preference)
   final localizationProvider = LocalizationProvider();

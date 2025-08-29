@@ -9,9 +9,7 @@ class SearchViewModelProvider extends ChangeNotifier {
   final TextEditingController controller = TextEditingController();
   final ScrollController scrollController = ScrollController();
   SearchedArticlesRepository searchedArticlesRepository =
-      SearchedArticlesRepository(
-          searchedArticlesDataSource:
-              DependencyInjection.searchedArticlesDataSource);
+      SearchedArticlesRepository(searchedArticlesDataSource: getIt.get());
 
   List<Articles> articles = [];
   bool loading = false;

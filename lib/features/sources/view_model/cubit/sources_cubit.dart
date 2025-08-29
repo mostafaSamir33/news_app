@@ -8,8 +8,8 @@ import '../../model/source_response_model.dart';
 
 class SourcesCubit extends Cubit<SourcesCubitState> {
   SourcesCubit() : super(SourcesCubitInitialState());
-  SourcesRepository sourcesRepository = SourcesRepository(
-      sourcesDataSource: DependencyInjection.sourcesDataSource);
+  SourcesRepository sourcesRepository =
+      SourcesRepository(sourcesDataSource: getIt.get());
 
   Future<void> getSources(String categoryId) async {
     emit(GetSourcesLoading());

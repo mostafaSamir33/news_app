@@ -8,8 +8,8 @@ import '../../model/repository/articles_repository.dart';
 
 class ArticlesCubit extends Cubit<ArticlesCubitState> {
   ArticlesCubit() : super(ArticlesCubitInitialState());
-  ArticlesRepository articlesRepository = ArticlesRepository(
-      articlesDataSource: DependencyInjection.articlesDataSource);
+  ArticlesRepository articlesRepository =
+      ArticlesRepository(articlesDataSource: getIt.get());
 
   Future<void> getArticles(String sourceId) async {
     emit(GetArticlesLoading());
