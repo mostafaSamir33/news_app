@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/common/extensions/context_extension.dart';
-import 'package:provider/provider.dart';
+import 'package:news_app/features/articles/view_model/cubit/articles_cubit.dart';
+import 'package:news_app/features/articles/view_model/cubit/articles_cubit_state.dart';
 
 import '../../../common/app_colors.dart';
-import '../view_model/articles_view_model_provider.dart';
 import 'article_card.dart';
 
 class TabContent extends StatefulWidget {
@@ -24,88 +25,171 @@ class _TabContentState extends State<TabContent> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        context.read<ArticlesViewModelProvider>().getArticles(widget.sourceId);
+        context.read<ArticlesCubit>().getArticles(widget.sourceId);
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ArticlesViewModelProvider>(
-      builder: (context, provider, child) {
-        if (provider.loading) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: context.getTextTheme().labelMedium!.color,
-            ),
-          );
-        }
-        if (provider.errorMessage != null) {
-          return Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              spacing: 8,
-              children: [
-                Icon(
-                  Icons.error_outline,
-                  color: context.getTextTheme().labelMedium!.color,
-                ),
-                Text(
-                  provider.errorMessage!,
-                  style: context.getTextTheme().labelMedium,
-                  textAlign: TextAlign.center,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    context
-                        .read<ArticlesViewModelProvider>()
-                        .getArticles(widget.sourceId);
-                  },
-                  child: Text(
-                    'Try Again',
-                    style: context.getTextTheme().labelMedium,
+    return BlocBuilder<ArticlesCubit, ArticlesCubitState>(
+      builder: (context, state) {
+        switch (state) {
+          case ArticlesCubitInitialState() || GetArticlesLoading():
+            return Center(
+              child: CircularProgressIndicator(
+                color: context.getTextTheme().labelMedium!.color,
+              ),
+            );
+          case GetArticlesEmptyList():
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Center(
+                    child: Text(
+                      'There is no news',
+                      style: context.getTextTheme().labelMedium,
+                    ),
                   ),
-                )
-              ],
-            ),
-          );
-        }
-        return Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              provider.articles == []
-                  ? Center(
-                      child: Text(
-                        'There is no news',
-                        style: context.getTextTheme().labelMedium,
-                      ),
-                    )
-                  : Expanded(
-                      child: RefreshIndicator(
-                        color: AppColors.mainColorLight,
-                        backgroundColor: Colors.black,
-                        onRefresh: () async {
-                          context
-                              .read<ArticlesViewModelProvider>()
-                              .getArticles(widget.sourceId);
-                        },
-                        child: ListView.separated(
-                          itemCount: provider.articles.length,
-                          itemBuilder: (context, index) => ArticleCard(
-                            article: provider.articles[index],
-                          ),
-                          separatorBuilder: (BuildContext context, int index) =>
-                              const SizedBox(
-                            height: 16,
-                          ),
+                ],
+              ),
+            );
+          case GetArticlesSuccess():
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: RefreshIndicator(
+                      color: AppColors.mainColorLight,
+                      backgroundColor: Colors.black,
+                      onRefresh: () async {
+                        context
+                            .read<ArticlesCubit>()
+                            .getArticles(widget.sourceId);
+                      },
+                      child: ListView.separated(
+                        itemCount: state.articles.length,
+                        itemBuilder: (context, index) => ArticleCard(
+                          article: state.articles[index],
+                        ),
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const SizedBox(
+                          height: 16,
                         ),
                       ),
                     ),
-            ],
-          ),
-        );
+                  )
+                ],
+              ),
+            );
+          case GetArticlesFailure():
+            return Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                spacing: 8,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    color: context.getTextTheme().labelMedium!.color,
+                  ),
+                  Text(
+                    state.errorMessage,
+                    style: context.getTextTheme().labelMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      context
+                          .read<ArticlesCubit>()
+                          .getArticles(widget.sourceId);
+                    },
+                    child: Text(
+                      'Try Again',
+                      style: context.getTextTheme().labelMedium,
+                    ),
+                  )
+                ],
+              ),
+            );
+        }
+
+        // if (state is GetArticlesLoading || state is ArticlesCubitInitialState) {
+        //   return Center(
+        //     child: CircularProgressIndicator(
+        //       color: context.getTextTheme().labelMedium!.color,
+        //     ),
+        //   );
+        // } else if (state is GetArticlesFailure) {
+        //   return Center(
+        //     child: Column(
+        //       crossAxisAlignment: CrossAxisAlignment.center,
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       spacing: 8,
+        //       children: [
+        //         Icon(
+        //           Icons.error_outline,
+        //           color: context.getTextTheme().labelMedium!.color,
+        //         ),
+        //         Text(
+        //           state.errorMessage,
+        //           style: context.getTextTheme().labelMedium,
+        //           textAlign: TextAlign.center,
+        //         ),
+        //         ElevatedButton(
+        //           onPressed: () {
+        //             context.read<ArticlesCubit>().getArticles(widget.sourceId);
+        //           },
+        //           child: Text(
+        //             'Try Again',
+        //             style: context.getTextTheme().labelMedium,
+        //           ),
+        //         )
+        //       ],
+        //     ),
+        //   );
+        // } else {
+        //   return Padding(
+        //     padding: const EdgeInsets.all(16),
+        //     child: Column(
+        //       children: [
+        //         state is GetArticlesEmptyList
+        //             ? Center(
+        //                 child: Text(
+        //                   'There is no news',
+        //                   style: context.getTextTheme().labelMedium,
+        //                 ),
+        //               )
+        //             : state is GetArticlesSuccess
+        //                 ? Expanded(
+        //                     child: RefreshIndicator(
+        //                       color: AppColors.mainColorLight,
+        //                       backgroundColor: Colors.black,
+        //                       onRefresh: () async {
+        //                         context
+        //                             .read<ArticlesCubit>()
+        //                             .getArticles(widget.sourceId);
+        //                       },
+        //                       child: ListView.separated(
+        //                         itemCount: state.articles.length,
+        //                         itemBuilder: (context, index) => ArticleCard(
+        //                           article: state.articles[index],
+        //                         ),
+        //                         separatorBuilder:
+        //                             (BuildContext context, int index) =>
+        //                                 const SizedBox(
+        //                           height: 16,
+        //                         ),
+        //                       ),
+        //                     ),
+        //                   )
+        //                 : const SizedBox.shrink()
+        //       ],
+        //     ),
+        //   );
+        // }
       },
     );
   }
